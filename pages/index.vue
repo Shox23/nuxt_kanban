@@ -7,6 +7,8 @@
       v-if="!store.isEmpty"
     >
       <Column
+        @dragover.prevent
+        @drop.prevent="store.stageDropHandler(item)"
         v-for="item in store.stages"
         :key="item.id"
         :id="item.id"
@@ -15,12 +17,12 @@
         <template #tasks>
           <Task
             ref="itemRefs"
-            v-for="task in store.tasks"
-            @dragstart="() => dragStart(event, stage, task)"
+            v-for="task in item.items"
+            @dragstart="store.dragStartHandler(item, task)"
             @dragend="dragEnd"
             @dragover.prevent="onDragOver"
             @dragleave="onDragLeave"
-            @drop.prevent="onDrop"
+            @drop.prevent="store.dropHandler(item, task)"
             :key="task"
             :taskInfo="task"
             :column-id="item.id"
@@ -60,8 +62,6 @@
 import { useKanbanStore } from "~/store";
 
 const store = useKanbanStore();
-const currentTask = ref(null);
-const currentStage = ref(null);
 const newStageTitle = ref("");
 
 const updateNewStageTitle = (val) => {
@@ -85,16 +85,9 @@ const addNewStage = () => {
   }
 };
 
-const dragStart = (stage, task) => {
-  currentTask.value = task;
-  currentStage.value = stage;
-};
-
 const dragEnd = () => {};
 
 const onDragOver = () => {};
 
 const onDragLeave = () => {};
-
-const onDrop = () => {};
 </script>

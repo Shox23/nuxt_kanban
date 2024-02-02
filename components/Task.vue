@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="columnId == taskInfo.stageId"
     draggable="true"
     class="task bg-[#e5e7eb] text-black p-4 rounded-md cursor-grab"
   >
@@ -141,6 +140,7 @@ const editTask = () => {
   if (titleToEdit.value) {
     const data = {
       id: props.taskInfo.id,
+      stageId: props.columnId,
       title: titleToEdit.value,
       desc: descToEdit.value ? descToEdit.value : "",
     };
@@ -152,6 +152,7 @@ const editTask = () => {
 };
 
 const deleteTask = () => {
-  store.deleteTask(props.taskInfo.id);
+  store.deleteTask(props.taskInfo.id, props.columnId);
+  closeModal();
 };
 </script>
