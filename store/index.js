@@ -183,6 +183,17 @@ export const useKanbanStore = defineStore("useKanbanStore", () => {
     currentStage.value.items.splice(taskIndex, 1);
     const stageIndex = stage.items.indexOf(task);
     currentTask.value.stageId = stage.id;
+    stages.value[stageIndex].items.push(currentTask.value);
+    const chosenTask = tasks.value.findIndex(
+      (item) => item.id == currentTask.value.id
+    );
+    tasks.value[chosenTask].stageId = stage.id;
+    const allTasks = JSON.parse(localStorage.allTasks);
+    const chosenLocalTask = allTasks.findIndex(
+      (item) => item.id == currentTask.value.id
+    );
+    allTasks[chosenLocalTask].stageId = stage.id;
+    localStorage.allTasks = JSON.stringify(allTasks);
     stage.items.splice(stageIndex + 1, 0, currentTask.value);
     stages.value = stages.value.map((element) => {
       if (element.id === stage.id) {
@@ -211,6 +222,17 @@ export const useKanbanStore = defineStore("useKanbanStore", () => {
     const stageIndex = stages.value.indexOf(stage);
     currentTask.value.stageId = stage.id;
     stages.value[stageIndex].items.push(currentTask.value);
+    const chosenTask = tasks.value.findIndex(
+      (item) => item.id == currentTask.value.id
+    );
+    tasks.value[chosenTask].stageId = stage.id;
+    const allTasks = JSON.parse(localStorage.allTasks);
+    const chosenLocalTask = allTasks.findIndex(
+      (item) => item.id == currentTask.value.id
+    );
+    allTasks[chosenLocalTask].stageId = stage.id;
+    localStorage.allTasks = JSON.stringify(allTasks);
+
     const taskIndex = currentStage.value.items.indexOf(currentTask.value);
     currentStage.value.items.splice(taskIndex, 1);
     stages.value = stages.value.map((element) => {
@@ -234,7 +256,6 @@ export const useKanbanStore = defineStore("useKanbanStore", () => {
       return element;
     });
     localStorage.allStages = JSON.stringify(allStages);
-    console.log(stages.value);
   };
 
   return {
